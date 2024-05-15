@@ -1,0 +1,9 @@
+type TODO_SU{
+    id: Int
+    user_id: Int
+    isSuperUser: Boolean
+    title: String
+    description: String
+    time: String
+    image: String
+}

@@ -1,0 +1,8 @@
+type TODO{
+    id: Int
+    user_id: Int
+    isSuperUser: Boolean
+    title: String
+    description: String
+    time: String
+}
