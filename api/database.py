@@ -38,6 +38,7 @@ class User(db.Model):
 class TODO(db.Model):
      id = db.Column(db.Integer, primary_key=True)
      user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+     isSuperUser = db.Column(db.Boolean)
      title = db.Column(db.String)
      description = db.Column(db.String)
      time = db.Column(db.String)
@@ -49,7 +50,7 @@ class TODO(db.Model):
                image = image
           else:
                image = "None"
-          todo = self(user_id = user_id, title = title, description=description, time= str(time), image=image)
+          todo = self(user_id = user_id, title = title, isSuperUser = isSuperUser,description=description, time= str(time), image=image)
           db.session.add(todo)
           db.session.commit()
           return todo
@@ -60,6 +61,15 @@ class TODO(db.Model):
               db.session.delete(todo)
               db.session.commit()
           return todo
+     @classmethod
+     def create_todo_su_meth(self, id, image):
+          todo = self.query.filter_by(id=id).first()
+          if todo:
+               todo.isSuperUser = True
+               todo.image = image
+               db.session.commit()
+          return todo
+
      
 if __name__ == "__main__":
      with app.app_context():

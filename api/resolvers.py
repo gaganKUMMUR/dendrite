@@ -28,13 +28,12 @@ def create_user(_,info,name):
     return User.create(name=name)
 
 @mutation.field("create_todo")
-def create_todo(_,info,title, time,description, user_id, isSuperUser):
-    return TODO.create(user_id=user_id, isSuperUser=isSuperUser,time=time, title=title,description=description)
+def create_todo(_,info,title, time,description, user_id):
+    return TODO.create(user_id=user_id, isSuperUser=False,time=time, title=title,description=description)
 
 @mutation.field("create_todo_su")
-def create_todo_su(_,info,title, time,description, isSuperUser,user_id, image):
-    return TODO.create(user_id=user_id, time=time, isSuperUser=isSuperUser,title=title,description=description, image=image)
+def create_todo_su(_,info,id, image):
+    return TODO.create_todo_su_meth(id=id,image=image)
 @mutation.field("update_user_to_su")
 def update_user_to_su(_,info, name):
-    # user = User.query.filter_by(name = name).update(isSuperUser = True)
     return User.update_isSuperUser(name=name)

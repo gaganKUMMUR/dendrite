@@ -26,8 +26,20 @@ def create_user(name):
 def update_user_to_su(name):
     body = """mutation{update_user_to_su(name:"%s"){id, name, isSuperUser}}""" %(name)
     resp = requests.post(BASE_URL, json={"query": body}).json()
-    return resp['data']
+def create_todo_grp(user_id, title, time, description):
+    body = """mutation{create_todo(user_id:%d,time:"%s",title:"%s",description:"%s"){id}}""" %(user_id,time,title,description)
+    resp = requests.post(BASE_URL, json={"query": body}).json()
+    return resp['data']['create_todo']['id']
+def create_todo_su_grp(id, image):
+    body = """mutation{create_todo_su(id:%d,image:"%s"){id,isSuperUser}}""" %(id,image)
+    resp = requests.post(BASE_URL, json={"query": body}).json()
+    return resp['data']['create_todo_su']['isSuperUser']
+
+def user_todos(user_id):
+    body = """mutation{user_todo(user_id:%d){id,image,isSuperUser,title,description,time}}"""%(user_id)
+    resp = requests.post(BASE_URL, json={"query": body}).json()
+    return resp['data']['user_todo']
 if __name__ == "__main__":
-    resp = create_user("gagan3")
+    resp = user_todos(2)
     print(resp)
     

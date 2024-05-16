@@ -2,7 +2,7 @@ type Mutation{
     user(name:String!): User!
     user_todo(user_id:Int!): [TODO!]!
     create_user(name:String!): User!
-    create_todo(user_id:Int!,isSuperUser:Boolean!,title:String!,description:String!,time:String!) : TODO!
-    create_todo_su(user_id:Int!,isSuperUser:Boolean!,title:String!,description:String!,time:String!,image:String!) : TODO_SU!
+    create_todo(user_id:Int!,title:String!,description:String!,time:String!) : TODO!
+    create_todo_su(id:Int!,image:String!) : TODO!
     update_user_to_su(name:String!) : User!
 }

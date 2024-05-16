@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<html>
+    <h3> Welcome Super User {{user_info['email']}}</h3>
+    <button onclick="location.href = 'http://127.0.0.1:5000/create_todo';">Create TODO list</button></br>
+    <a href="/logout">Logout</a>
+
+<div class="list-group">
+    {% for item in todo%}
+    <a href="/view/{{item.id}}/{{item.title}}/{{item.id}}/{{item.time}}/{{item.description}}/{{user_id}}"+ class="list-group-item"> {{item.title}}</a>
+    {% endfor %}
+</div>
+
+</html>

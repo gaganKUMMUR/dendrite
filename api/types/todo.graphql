@@ -5,4 +5,5 @@ type TODO{
     title: String
     description: String
     time: String
+    image: String
 }
