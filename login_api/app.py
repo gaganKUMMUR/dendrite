@@ -1,6 +1,7 @@
-from flask import Flask, g,redirect,render_template, url_for
+from flask import Flask, g,redirect,render_template, url_for, request
 app = Flask(__name__)
 import os
+import requests
 
 app.secret_key = 'weallwilldieoneday'
 app.config['OIDC_CLIENT_SECRETS'] = 'config_oidc.json'
@@ -18,7 +19,6 @@ def hello():
     if (oidc.user_loggedin):
         email = oidc.user_getfield('email')
         return redirect(url_for("welcome"))
-    logo = os.path.join(app.config['UPLOAD_FOLDER'],'linkedin-signin.png')
     return 'Hi, you have been logged out! <a href="/login">Login</a>'
 
 @app.route('/login')
@@ -36,9 +36,24 @@ def logout():
     oidc.logout() 
     return 'Hi, you have been logged out! <a href="/">Return</a>'
 
-@app.route('/welcome')
+@app.route('/welcome',  methods=['GET','POST'])
 def welcome():
-    return oidc.user_getfield('name')
+    
+    if (not oidc.user_loggedin):
+        return redirect(url_for('hello'))
+    name = oidc.user_getfield('name')
+    return render_template('welcome.html', params =[name])
 
+@app.route('/create_todo')
+def create_todo():
+    return render_template('create_todo.html')
+
+@app.route('/dashboard', methods=['GET','POST'])
+def dashboard():
+    if request.method == 'POST':
+        result = request.form
+        title = result['title']
+        return redirect(url_for('welcome'))
+    
 if __name__ == "__main__":
     app.run(debug=True)

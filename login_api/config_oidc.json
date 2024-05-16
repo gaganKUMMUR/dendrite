@@ -1,7 +1,7 @@
 {
     "web": {
      "client_id": "dendrite_login",
-     "client_secret": "okaVn2RmTTCFalU1b7W2NChBdWmY0xKw",
+     "client_secret": "MetRFao0NRkbekPez0LFBmcjMhnfjPCp",
      "auth_uri": "http://localhost:8080/realms/dendrite/protocol/openid-connect/auth",
      "token_uri": "http://localhost:8080/realms/dendrite/protocol/openid-connect/token",
      "issuer": "http://localhost:8080/realms/dendrite",
