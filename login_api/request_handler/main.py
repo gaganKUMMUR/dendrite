@@ -23,6 +23,10 @@ def create_user(name):
     body = """mutation{create_user(name:"%s"){id,name,isSuperUser}}""" %(name)
     resp = requests.post(BASE_URL, json={"query": body})
     return resp.text
+def update_user_to_su(name):
+    body = """mutation{update_user_to_su(name:"%s"){id, name, isSuperUser}}""" %(name)
+    resp = requests.post(BASE_URL, json={"query": body}).json()
+    return resp['data']
 if __name__ == "__main__":
     resp = create_user("gagan3")
     print(resp)

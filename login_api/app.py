@@ -1,59 +1,43 @@
-from flask import Flask, g,redirect,render_template, url_for, request
-app = Flask(__name__)
+#! /usr/bin/env python3.6
+
+
 import os
-import requests
+from flask import Flask, redirect, request, render_template
 
-app.secret_key = 'weallwilldieoneday'
-app.config['OIDC_CLIENT_SECRETS'] = 'config_oidc.json'
-app.config['OIDC_COOKIE_SECURE'] = False
-from flask_oidc import OpenIDConnect
-oidc = OpenIDConnect(app)
+import stripe
+# This is your test secret API key.
+stripe.api_key = 'sk_test_51ONrt3SBco5jw1ZOEqfYCsb28jeel942DhqURr5sTiGrALuJxl4dRgKNP6HQfil28rUCJVHrZx9rgjUIzZySVT2Y00RQg3CCsR'
 
-photos = os.path.join('static','photos')
-app.config['UPLOAD_FOLDER'] = photos
+app = Flask(__name__,
+            static_url_path='',
+            static_folder='public')
+
+YOUR_DOMAIN = 'http://localhost:4242'
 
 @app.route('/')
 def hello():
-    # oidc.logout() 
-    print(oidc.user_loggedin)
-    if (oidc.user_loggedin):
-        email = oidc.user_getfield('email')
-        return redirect(url_for("welcome"))
-    return 'Hi, you have been logged out! <a href="/login">Login</a>'
+    return render_template('checkout.html')
 
-@app.route('/login')
-@oidc.require_login
-def loginwithlinkdin():
-    print("hello",oidc.user_loggedin) #this will print true if the user is logged in
-    # name = oidc.user_getfield('name') #getting name from linkedin
-    email = oidc.user_getfield('email') #getting email from linkedin
-    msg= "welcome "+"name"+" your email is "+ email + '<a href="/logout">Logout</a>'
-    return (msg)
-    
-@app.route('/logout')
-def logout():
-    """Performs local logout by removing the session cookie."""
-    oidc.logout() 
-    return 'Hi, you have been logged out! <a href="/">Return</a>'
+@app.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try: 
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    'price': 'price_1PH1B5SBco5jw1ZOlHwmNr6V',
+                    'quantity': 1,
+                },
+            ],
+            currency='inr',
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/success.html',
+            cancel_url=YOUR_DOMAIN + '/cancel.html',
+        )
+    except Exception as e:
+        return str(e)
 
-@app.route('/welcome',  methods=['GET','POST'])
-def welcome():
-    
-    if (not oidc.user_loggedin):
-        return redirect(url_for('hello'))
-    name = oidc.user_getfield('name')
-    return render_template('welcome.html', params =[name])
+    return redirect(checkout_session.url, code=303)
 
-@app.route('/create_todo')
-def create_todo():
-    return render_template('create_todo.html')
-
-@app.route('/dashboard', methods=['GET','POST'])
-def dashboard():
-    if request.method == 'POST':
-        result = request.form
-        title = result['title']
-        return redirect(url_for('welcome'))
-    
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(port=4242, debug=True)

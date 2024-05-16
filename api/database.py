@@ -25,6 +25,13 @@ class User(db.Model):
                db.session.delete(user)
                db.session.commit()
                return user
+    @classmethod
+    def update_isSuperUser(self, name):
+         user = self.query.filter_by(name = name).first()
+         if user:
+             user.isSuperUser = True
+             db.session.commit()
+             return user
           
 
     
