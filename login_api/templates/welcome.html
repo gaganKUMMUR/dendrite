@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
-    <h3> Welcome {{params[0]}}</h3>
-    <button onclick="location.href = 'http://127.0.0.1:5000/create_todo';">Create TODO list</button>
+    <h3> Welcome {{user_info['email']}}</h3>
+    <h4>{{check_user_is_super_user}}</h4>
+    <button onclick="location.href = 'http://127.0.0.1:5000/create_todo';">Create TODO list</button></br>
+    <a href="/superuser">Click Link TO become superuser</a></br>
     <a href="/logout">Logout</a>
 
 </html>
