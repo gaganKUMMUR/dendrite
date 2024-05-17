@@ -1,7 +1,7 @@
 ###Steps run login api###
 
 1. Running KeyCloak
- '''docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0.4 start-dev'''
+```docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0.4 start-dev```
 2. Login with credentials username = admin and password = admin
 3. create realm named dendrite
 4. create a client named dendrite_login
