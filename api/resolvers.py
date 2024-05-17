@@ -37,3 +37,9 @@ def create_todo_su(_,info,id, image):
 @mutation.field("update_user_to_su")
 def update_user_to_su(_,info, name):
     return User.update_isSuperUser(name=name)
+@mutation.field("update_todo")
+def update_todo(_,info,id,title,description,time):
+    return TODO.update_todo_meth(id=id,time=time,title=title,description=description)
+@mutation.field("delete_todo")
+def delete_todo(_,info,id):
+    return TODO.delete(id=id)

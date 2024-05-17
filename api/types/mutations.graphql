@@ -5,4 +5,6 @@ type Mutation{
     create_todo(user_id:Int!,title:String!,description:String!,time:String!) : TODO!
     create_todo_su(id:Int!,image:String!) : TODO!
     update_user_to_su(name:String!) : User!
+    update_todo(id:Int!,title:String!,time:String!,description:String!) : TODO!
+    delete_todo(id:Int!) :TODO!
 }

@@ -21,7 +21,12 @@
     <nav class="navbar navbar-dark bg-primary">
         <h4 class="text-light text-monospace">MY TODO LIST</h4>
         <button type="button" class="btn btn-light float-right ml-auto text-monospace"
+            onclick="location.href = 'http://127.0.0.1:5000/edit/{{id}}/{{title}}/{{time}}/{{description}}';">Edit</button>
+            <button type="button" class="btn btn-danger float-right mx-3 text-monospace"
+            onclick="location.href = 'http://127.0.0.1:5000/delete/{{id}}';">Delete</button>
+            <button type="button" class="btn btn-light float-right mr-3 text-monospace"
             onclick="location.href = 'http://127.0.0.1:5000/dashboard';">Back</button>
+        
     </nav>
 
     <div class="container my-5">
@@ -30,7 +35,7 @@
             <h2 class="text-monospace border rounded" id="formGroupExampleInput">{{title}}</h2>
         </div>
         <div class="form-group  text-center">
-            <img id="image" src="{{id}}" alt="Image" width="350px" height="350px" class="hidden border border-primary">
+            <img id="image" src="{{image}}" alt="Image" width="350px" height="350px" class="hidden border border-primary">
 
             <script>
                 const img = document.getElementById('image');

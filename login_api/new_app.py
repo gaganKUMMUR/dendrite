@@ -1,6 +1,6 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request,g
 from flask_oidc import OpenIDConnect
-from request_handler import create_user, get_user_id, get_user_status, get_users_list, update_user_to_su, create_todo_grp,create_todo_su_grp,user_todos
+from request_handler import create_user, get_user_id, get_user_status, get_users_list, update_user_to_su, create_todo_grp,create_todo_su_grp,user_todos,update_todo,delete_todo_api
 import stripe
 from pathlib import Path
 # This is your test secret API key.
@@ -19,7 +19,7 @@ oidc = OpenIDConnect(app)
 
 @app.route('/')
 def index():
-    return """<a href='/dashboard'>Login</a>"""
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/login')
@@ -39,6 +39,7 @@ def logout():
 @app.route('/dashboard', methods=['POST','GET'])
 @oidc.require_login
 def dashboard():
+
     email = oidc.user_getfield('email')
     if ( email not in get_users_list()):
         create_user(email)
@@ -118,11 +119,28 @@ def payment_success():
     print("resp",resp)
     return redirect(url_for('dashboard'))
     
-@app.route("/view/<id>/<title>/<image>/<time>/<desciption>/<user_id>")
-def view(id,title,image,time,desciption,user_id):
-    print(id,title,time,image,desciption)
+@app.route("/view/<id>/<title>/<image>/<time>/<description>/<user_id>")
+def view(id,title,image,time,description,user_id):
+    print(id,title,time,image,description)
     filename = str(user_id)+"/"+str(id)+'.jpeg'
-    id = url_for('static', filename=filename)
-    return render_template('new.html', image=image,title = title, id = id)
+    image = url_for('static', filename=filename)
+    return render_template('new.html', image=image,title = title, id = id,time =time,description = description)
+@app.route("/edit/<id>/<title>/<time>/<description>")
+def edit(id,title,time,description,):
+    print(id,time,title,description)
+    return render_template('edit.html',title = title, id = id,time =time,description = description)
+@app.route("/edit_success/<id>", methods=['POST'])
+def edit_success(id):
+    if request.method == 'POST':
+        title = request.form.get('title')
+        time = request.form.get('time')
+        description = request.form.get('description')
+        update_todo(id=int(id),time=time,title=title,description=description)
+        return redirect(url_for('dashboard'))
+@app.route("/delete/<id>")
+def delete_todo(id):
+    delete_todo_api(int(id))
+    return redirect(url_for('dashboard'))
+        
 if __name__ == '__main__':
     app.run(debug=True)

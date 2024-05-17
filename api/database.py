@@ -56,7 +56,7 @@ class TODO(db.Model):
           return todo
      @classmethod
      def delete(self, id):
-          todo = self.query.filter_by(id = id)
+          todo = self.query.filter_by(id = id).first()
           if todo:
               db.session.delete(todo)
               db.session.commit()
@@ -69,7 +69,15 @@ class TODO(db.Model):
                todo.image = image
                db.session.commit()
           return todo
-
+     @classmethod
+     def update_todo_meth(self, id, title, description, time):
+          todo = self.query.filter_by(id=id).first()
+          if todo:
+               todo.title = title
+               todo.description = description
+               todo.time = time
+               db.session.commit()
+          return todo
      
 if __name__ == "__main__":
      with app.app_context():

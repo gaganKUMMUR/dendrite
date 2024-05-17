@@ -39,6 +39,15 @@ def user_todos(user_id):
     body = """mutation{user_todo(user_id:%d){id,image,isSuperUser,title,description,time}}"""%(user_id)
     resp = requests.post(BASE_URL, json={"query": body}).json()
     return resp['data']['user_todo']
+def update_todo(id, time,title,description):
+    body = """mutation{update_todo(id:%d,time:"%s",title:"%s",description:"%s"){id, time,title}}"""%(id,time,title,description)
+    resp = requests.post(BASE_URL, json={"query" : body})
+    return resp.status_code
+
+def delete_todo_api(id):
+    body="""mutation{delete_todo(id:%d){id,title}}"""%(id)
+    resp = requests.post(BASE_URL,json={"query":body})
+    return resp.status_code
 if __name__ == "__main__":
     resp = user_todos(2)
     print(resp)

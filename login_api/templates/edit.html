@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <h4 class="text-light text-monospace">MY TODO LIST</h4>
+        <button type="button" class="btn btn-light float-right mx-3 text-monospace"
+            onclick="location.href = 'http://127.0.0.1:5000/dashboard';">back</button>
+    </nav>
+    <div class="container border border-primary rounded my-3">
+        <form class="form-horizontal my-3" action="/edit_success/{{id}}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="text-monospace">Todo Form</label>
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" class="form-control text-monospace" value = {{title}} placeholder="Title" />
+            </div>
+            <div class="form-group">
+                <label for="time">Time</label>
+                <input type="time" name="time" id="time" class="form-control text-monospace" value={{time}} />
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" name="description" class="form-control text-monospace" placeholder="Description"  value="{{description}}"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="form-control bg-primary text-monospace text-light" />
+            </div>
+
+
+    </div>
+
+    </form>
+    </div>
+
+</body>
+
+</html>
