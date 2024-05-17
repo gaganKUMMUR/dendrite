@@ -1,5 +1,62 @@
 <!DOCTYPE html>
-<html>
-<img src="{{id}}" height="500px" width="500px">
-<p>{{title}}</p>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <h4 class="text-light text-monospace">MY TODO LIST</h4>
+        <button type="button" class="btn btn-light float-right ml-auto text-monospace"
+            onclick="location.href = 'http://127.0.0.1:5000/dashboard';">Back</button>
+    </nav>
+
+    <div class="container my-5">
+        <div class="form-group  text-bold">
+            <label for="formGroupExampleInput" class="form-label text-monospace">Title</label>
+            <h2 class="text-monospace border rounded" id="formGroupExampleInput">{{title}}</h2>
+        </div>
+        <div class="form-group  text-center">
+            <img id="image" src="{{id}}" alt="Image" width="350px" height="350px" class="hidden border border-primary">
+
+            <script>
+                const img = document.getElementById('image');
+                img.onload = function () {
+                    img.classList.remove('hidden');
+                };
+                img.onerror = function () {
+                    console.log('Image does not exist or failed to load');
+                };
+            </script>
+        </div>
+
+        <div class="form-group  text-bold">
+            <label for="formGroupExampleInput" class="form-label text-monospace">Time</label>
+            <h4 class="text-monospace border rounded" id="formGroupExampleInput">{{time}}</h4>
+        </div>
+
+        <div class="form-group text-bold">
+            <label for="formGroupExampleInput" class="form-label text-monospace">Description</label>
+            <h4 class="text-monospace border rounded" id="formGroupExampleInput">{{description}}</h4>
+        </div>
+
+
+
+    </div>
+
+</body>
+
 </html>

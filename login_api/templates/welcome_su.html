@@ -1,48 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Bootstrap Button Alignment</title>
-        <meta charset="utf-8">
-       
-        <link rel="stylesheet" 
-              href=
-    "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <script src=
-    "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-      </script>
-        <script src=
-    "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
-        </script>
-        <script src=
-    "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
-        </script>
-    </head>
-    <nav class="navbar navbar-dark bg-primary">
-        <h4 class="text-light text-monospace">MY TODO LIST</h4>
-        <button type="button" class="btn btn-light float-right ml-auto text-monospace" onclick="location.href = 'http://127.0.0.1:5000/logout';">Logout</button>    
-    </nav>
 
+<head>
    
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+    </script>
+</head>
+<nav class="navbar navbar-dark bg-primary">
+    <h4 class="text-light text-monospace">MY TODO LIST</h4>
+    <button type="button" class="btn btn-light float-right ml-auto text-monospace"
+        onclick="location.href = 'http://127.0.0.1:5000/logout';">Logout</button>
+</nav>
+
+
 <div class="container m-5">
-   
+
     <div class="d-flex">
         <div class="container">
             <p class="text-monospace"> Welcome {{user_info['email']}}</h3>
             <p class="text-monospace">Your TODO List</h4>
         </div>
-        
+
     </div>
 
-        <div class="container">
+    <div class="container">
         <div class="list-group ">
             {% for item in todo%}
-            <a href="/view/{{item.id}}/{{item.title}}/{{item.id}}/{{item.time}}/{{item.description}}/{{user_id}}" class="list-group-item text-monospace"> {{item.title}}</a>
+            <a href="/view/{{item.id}}/{{item.title}}/{{item.id}}/{{item.time}}/{{item.description}}/{{user_id}}"
+                class="list-group-item text-monospace"> {{item.title}}</a>
             {% endfor %}
         </div>
     </div>
 </div>
-<button type="button" class="btn btn-primary float-right  mr-3 text-monospace" onclick="location.href = 'http://127.0.0.1:5000/create_todo';">Add</button><br>   
+<button type="button" class="btn btn-primary float-right  mr-3 text-monospace"
+    onclick="location.href = 'http://127.0.0.1:5000/create_todo';">Add</button><br>
 
-    
+
 
 </html>
