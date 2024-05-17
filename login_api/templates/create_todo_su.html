@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html>
-    <body>
-    <form action="/dashboard" method="POST" enctype="multipart/form-data">
-        <p>Title<input type = "text" name = "title" /></p>
-        <p>Time<input type="time" name="time"/></p>
-        <p>Description<input type="text" name="description"/></p>
-        <p>Image<input type="file" name="image"/></p>
-        <p><input type="submit" value="Submit"/></p>
+
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <h4 class="text-light text-monospace">MY TODO LIST</h4>
+        <button type="button" class="btn btn-light float-right ml-auto text-monospace"
+            onclick="location.href = 'http://127.0.0.1:5000/dashboard';">Back</button>
+    </nav>
+    <div class="container border border-primary rounded my-3">
+        <form class="form-horizontal my-3" action="/dashboard" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="text-monospace">Todo Form</label>
+            </div>
+            <div class="form-group">
+                <input type="text" name="title" id="title" class="form-control text-monospace" placeholder="Title" />
+            </div>
+            <div class="form-group">
+                <label for="time">Time</label>
+                <input type="time" name="time" id="time" class="form-control text-monospace" />
+            </div>
+            <div class="form-group">
+                <input type="text" name="description" class="form-control text-monospace" placeholder="Description" />
+            </div>
+            <div class="form-group">
+                <input type="file" class="form-control text-monospace" id="inputGroupFile02" name="image">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="form-control bg-primary text-monospace text-light" />
+            </div>
+
+
+    </div>
+
     </form>
-    </body>
+    </div>
+
+</body>
+
 </html>
