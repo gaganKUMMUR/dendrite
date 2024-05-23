@@ -39,55 +39,61 @@ def logout():
 @app.route('/dashboard', methods=['POST','GET'])
 @oidc.require_login
 def dashboard():
-
     email = oidc.user_getfield('email')
-    if ( email not in get_users_list()):
-        create_user(email)
-    check_user_is_super_user = get_user_status(name=email)
+    token = "Bearer "+oidc.get_access_token()
+    print(token)
+    
+    if ( email not in get_users_list(token=token)):
+        create_user(email,token=token)
+    check_user_is_super_user = get_user_status(name=email,token=token)
     print(check_user_is_super_user)
-    if request.method == 'POST' and not check_user_is_super_user:
-        data = request.form
-        title = data.get('title')
-        time = str(data.get('time'))
-        description = data.get('description')
-        user_id = get_user_id(name=email)
-        resp = create_todo_grp(user_id=user_id,time= time,title= title,description= description)
-        print(resp)
-        # print(title,time,description)
-        # print(request.form.get('title'))
-        return redirect(url_for('dashboard'))
-    elif request.method == 'POST' and check_user_is_super_user:
-        user_id = get_user_id(name=email)
-        data = request.form
-        title = data.get('title')
-        time = str(data.get('time'))
-        description = data.get('description')
-        image= request.files['image']
-        todo_su_id = create_todo_grp(user_id=user_id,time=time,title=title,description=description)
-        directory_path = Path("./tmp/{}/".format(user_id))
-        if not directory_path.exists():
-            directory_path.mkdir(parents=True)  # parents=True will also create parent directories if they don't exist
-        image.save(directory_path.joinpath(str(todo_su_id)+".jpeg"))
-        resp = create_todo_su_grp(id=todo_su_id, image=str(directory_path.joinpath(str(todo_su_id)+".jpeg")))
-        return redirect(url_for('dashboard'))
-    elif not check_user_is_super_user:
-        user_info = oidc.user_getinfo(['email', 'preferred_username'])
-        return render_template('welcome.html', user_info=user_info)
-    elif check_user_is_super_user:
-        user_info = oidc.user_getinfo(['email', 'preferred_username'])
-        user_id = get_user_id(email)
-        lst = user_todos(user_id=user_id)
-        print(lst)
-        return render_template('welcome_su.html', user_info = user_info, todo = lst, user_id= user_id)
-    else:
+    try:
+        if request.method == 'POST' and not check_user_is_super_user:
+            data = request.form
+            title = data.get('title')
+            time = str(data.get('time'))
+            description = data.get('description')
+            user_id = get_user_id(name=email,token=token)
+            resp = create_todo_grp(user_id=user_id,time= time,title= title,description= description, token=token)
+            print(resp)
+            # print(title,time,description)
+            # print(request.form.get('title'))
+            return redirect(url_for('dashboard'))
+        elif request.method == 'POST' and check_user_is_super_user:
+            user_id = get_user_id(name=email, token=token)
+            data = request.form
+            title = data.get('title')
+            time = str(data.get('time'))
+            description = data.get('description')
+            image= request.files['image']
+            todo_su_id = create_todo_grp(user_id=user_id,time=time,title=title,description=description, token=token)
+            directory_path = Path("./tmp/{}/".format(user_id))
+            if not directory_path.exists():
+                directory_path.mkdir(parents=True)  # parents=True will also create parent directories if they don't exist
+            image.save(directory_path.joinpath(str(todo_su_id)+".jpeg"))
+            resp = create_todo_su_grp(id=todo_su_id, image=str(directory_path.joinpath(str(todo_su_id)+".jpeg")),token=token)
+            return redirect(url_for('dashboard'))
+        elif not check_user_is_super_user:
+            user_info = oidc.user_getinfo(['email', 'preferred_username'])
+            return render_template('welcome.html', user_info=user_info)
+        elif check_user_is_super_user:
+            user_info = oidc.user_getinfo(['email', 'preferred_username'])
+            user_id = get_user_id(email, token=token)
+            lst = user_todos(user_id=user_id, token=token)
+            print(lst)
+            return render_template('welcome_su.html', user_info = user_info, todo = lst, user_id= user_id)
+        else:
+            return redirect(url_for('index'))
+    except:
         return redirect(url_for('index'))
 
 
 @app.route('/create_todo')
 @oidc.require_login
 def create_todo():
+    token = "Bearer "+oidc.get_access_token()
     email = oidc.user_getfield('email')
-    check_user_is_super_user = get_user_status(name=email)
+    check_user_is_super_user = get_user_status(name=email, token=token)
     if check_user_is_super_user:
         return render_template("create_todo_su.html")
     return render_template('create_todo.html')
@@ -95,6 +101,7 @@ def create_todo():
 @app.route('/superuser')
 @oidc.require_login
 def superuser():
+    token = "Bearer "+oidc.get_access_token()
     try: 
         checkout_session = stripe.checkout.Session.create(
             line_items=[
@@ -113,33 +120,43 @@ def superuser():
 
     return redirect(checkout_session.url, code=303)
 @app.route("/success")
+@oidc.require_login
 def payment_success():
+    token = "Bearer "+oidc.get_access_token()
     email = oidc.user_getfield('email')
-    resp = update_user_to_su(email)
+    resp = update_user_to_su(email, token=token)
     print("resp",resp)
     return redirect(url_for('dashboard'))
     
 @app.route("/view/<id>/<title>/<image>/<time>/<description>/<user_id>")
+@oidc.require_login
 def view(id,title,image,time,description,user_id):
+    token = "Bearer "+oidc.get_access_token()
     print(id,title,time,image,description)
     filename = str(user_id)+"/"+str(id)+'.jpeg'
     image = url_for('static', filename=filename)
     return render_template('new.html', image=image,title = title, id = id,time =time,description = description)
 @app.route("/edit/<id>/<title>/<time>/<description>")
+@oidc.require_login
 def edit(id,title,time,description,):
+    token = "Bearer "+oidc.get_access_token()
     print(id,time,title,description)
     return render_template('edit.html',title = title, id = id,time =time,description = description)
 @app.route("/edit_success/<id>", methods=['POST'])
+@oidc.require_login
 def edit_success(id):
+    token = "Bearer "+oidc.get_access_token()
     if request.method == 'POST':
         title = request.form.get('title')
         time = request.form.get('time')
         description = request.form.get('description')
-        update_todo(id=int(id),time=time,title=title,description=description)
+        update_todo(id=int(id),time=time,title=title,description=description,token=token)
         return redirect(url_for('dashboard'))
 @app.route("/delete/<id>")
+@oidc.require_login
 def delete_todo(id):
-    delete_todo_api(int(id))
+    token = "Bearer "+oidc.get_access_token()
+    delete_todo_api(int(id), token=token)
     return redirect(url_for('dashboard'))
         
 if __name__ == '__main__':
